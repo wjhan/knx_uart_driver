@@ -1,5 +1,6 @@
 #include "knx.h"
-
+#include <stdio.h>
+#include <stdlib.h>
 struct KnxFrameType* knxFrame;
 
 //struct KnxFrameType* knxRecFrame;  //new:  Frame receive from knx bus
@@ -137,6 +138,7 @@ int groupWriteBool(int fd,int mainGroup, int middleGroup, int subGroup, int valu
 
 int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int value)
 {
+	int i=0;
 	uint8_t valueByte = value&0xFF;
 
 	initKnxFrame(fd);
