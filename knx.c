@@ -108,7 +108,7 @@ int uartSendFrame(int fd) {
     sendbuf[0] |=i;
     sendbuf[1] = knxFrame->knxFrameBuffer[i];
 
-   // printf("%02x\n%02x\n",sendbuf[0],sendbuf[1]);
+    printf("%02x\n%02x\n",sendbuf[0],sendbuf[1]);
     UART_Send(fd,sendbuf,2);
   }
 
@@ -145,17 +145,19 @@ int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int valu
 
 	clean();
 
-  	setSourceAddress(4,7,13);
+  	setSourceAddress(1,1,2);
   	setTargetGroupAddress(mainGroup,middleGroup,subGroup);
   	setSecondDataByte(value);
   	setCommand(KNX_COMMAND_WRITE);
   	setPayloadLength(3);
   	setChecksum();
 	
-	
+	/***
 	for(i=0;i<knxFrame->frameLength;i++) {
-    printf("%0x\n", knxFrame->knxFrameBuffer[i]);
-    }
+  		printf("%0x\n", knxFrame->knxFrameBuffer[i]);
+	}**/
+	return uartSendFrame(fd);    
+
 
 	//createKNXMessageFrame(3,KNX_COMMAND_WRITE,mainGroup,middleGroup,subGroup,valueByte);
 	

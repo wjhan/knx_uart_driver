@@ -192,7 +192,7 @@ int main(void)
 
 
 
-	printf("Linux serial test app\n");
+//	printf("Linux serial test app\n");
 
 	setup_serial_port();
 
@@ -208,9 +208,16 @@ int main(void)
 
 	while (1) {
 
-		/** Group Write boolen 
-		groupWriteBool(_fd,2,1,227,0);
-		**/
+		groupWriteByte(_fd,0,1,1,66);
+//		groupWriteBool(_fd,0,1,3,1);
+//		groupWriteBool(_fd,0,0,2,1);
+//		groupWriteBool(_fd,0,0,1,1);
+		sleep(2);
+		/** Group Write boolen**/ 
+//		groupWriteBool(_fd,0,1,3,0);
+//		groupWriteBool(_fd,0,0,3,0);
+//		groupWriteBool(_fd,0,2,3,0);
+		usleep(500000);
 
 		/** Group Read Boolen status
 		groupReadBoolReq(_fd,2,1,227,0);
@@ -232,7 +239,7 @@ int main(void)
 
 		/*** Grour write 1 Byte data ***/
 
-		groupWriteByte(_fd,0,1,1,0xF0);
+//		groupWriteByte(_fd,0,1,1,0x10);
 		
 
 		sleep(3);
@@ -261,7 +268,8 @@ int main(void)
 			if (current.tv_sec - last_stat.tv_sec > 5) {
 				dump_serial_port_stats();
 				last_stat = current;
-				groupWriteBool(_fd,2,1,227,1);
+//				groupWriteBool(_fd,0,1,3,0);
+				groupWriteByte(_fd,0,1,1,0);
 				//groupReadBoolReq(_fd,2,1,227,0);
 			}
 		}
