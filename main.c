@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <time.h>
+#include <knx.h>
 #include <linux/serial.h>
 
 #define BAUDRATE B19200
