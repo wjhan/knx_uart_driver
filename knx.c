@@ -137,7 +137,7 @@ int groupWriteBool(int fd,int mainGroup, int middleGroup, int subGroup, int valu
 
 int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int value)
 {
-	unit8_t valueByte = value&0xFF;
+	uint8_t valueByte = value&0xFF;
 
 	initKnxFrame(fd);
 

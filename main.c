@@ -231,7 +231,7 @@ int main(void)
 
 		/*** Grour write 1 Byte data ***/
 
-		groupWriteByte(_fd,int 0,int 1,int 1,0xF0)
+		groupWriteByte(_fd,0,1,1,0xF0);
 		
 
 		sleep(3);
