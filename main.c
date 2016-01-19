@@ -190,7 +190,7 @@ int main(void)
 	unsigned char tb[10] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
 	int _cl_stats =1;
 
-
+	int valuebyte = 0x20;
 
 //	printf("Linux serial test app\n");
 
@@ -208,7 +208,8 @@ int main(void)
 
 	while (1) {
 
-		groupWriteByte(_fd,0,1,1,66);
+		groupWriteByte(_fd,0,1,1,valuebyte);
+		valuebyte + = 0x10;
 //		groupWriteBool(_fd,0,1,3,1);
 //		groupWriteBool(_fd,0,0,2,1);
 //		groupWriteBool(_fd,0,0,1,1);
@@ -269,7 +270,7 @@ int main(void)
 				dump_serial_port_stats();
 				last_stat = current;
 //				groupWriteBool(_fd,0,1,3,0);
-				groupWriteByte(_fd,0,1,1,0);
+//				groupWriteByte(_fd,0,1,1,0);
 				//groupReadBoolReq(_fd,2,1,227,0);
 			}
 		}
