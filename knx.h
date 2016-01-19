@@ -68,6 +68,9 @@ int groupReadBoolReq(int fd, int mainGroup, int middleGroup, int subGroup, int v
 
 int uartSendFrame(int fd);
 
+int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int value);
+
+
 #endif
 
 

@@ -207,28 +207,32 @@ int main(void)
 
 	while (1) {
 
+		/** Group Write boolen 
+		groupWriteBool(_fd,2,1,227,0);
+		**/
+
+		/** Group Read Boolen status
 		groupReadBoolReq(_fd,2,1,227,0);
 
 		usleep(50000);
-		//int c = read(_fd, &rb, sizeof(rb));
-		//int retval = poll(&serial_poll, 1, 10000);
 
-		//int retval =1;
-//		usleep(10000);
 
-//        groupWriteBool(_fd,2,1,227,0);
+
 		int c = read(_fd, &rb, 1024);
-//		usleep(10000);
-		if(c>8) printf("knx write success\n");
-//		write(_fd,&tb,10);
-		//usleep(50000);
 
-		//process_rx_data();
+		if(c>8) printf("knx write success\n");
 
 		usleep(50000);
 		c = read(_fd, &rb, 1024);
 		if(c>0) rx_data_handler(rb,c);
 		process_rx_data();
+		***/
+
+
+		/*** Grour write 1 Byte data ***/
+
+		groupWriteByte(_fd,int 0,int 1,int 1,0xF0)
+		
 
 		sleep(3);
 

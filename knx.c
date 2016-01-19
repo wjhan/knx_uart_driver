@@ -48,6 +48,13 @@ void setFirsetDataByte(int data) {
   knxFrame->knxFrameBuffer[7] |= data;
 }
 
+void setSecondDataByte(uint8_t data)
+{
+	knxFrame->knxFrameBuffer[7] &= B11000000;
+	knxFrame->knxFrameBuffer[8] = data;
+	
+}
+
 void setCommand(enum KnxCommandType command) {
   knxFrame->knxFrameBuffer[6] &= B11111100;
   knxFrame->knxFrameBuffer[7] &= B00111111;
@@ -126,6 +133,26 @@ int groupWriteBool(int fd,int mainGroup, int middleGroup, int subGroup, int valu
 
 
   return uartSendFrame(fd);
+}
+
+int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int value)
+{
+	unit8_t valueByte = value&0xFF;
+
+	initKnxFrame(fd);
+
+	clean();
+
+  	setSourceAddress(4,7,13);
+  	setTargetGroupAddress(mainGroup,middleGroup,subGroup);
+  	setSecondDataByte(value);
+  	setCommand(KNX_COMMAND_WRITE);
+  	setPayloadLength(3);
+  	setChecksum();
+
+	//createKNXMessageFrame(3,KNX_COMMAND_WRITE,mainGroup,middleGroup,subGroup,valueByte);
+	
+
 }
 
 int groupReadBoolReq(int fd, int mainGroup, int middleGroup, int subGroup, int value)
