@@ -149,6 +149,11 @@ int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int valu
   	setCommand(KNX_COMMAND_WRITE);
   	setPayloadLength(3);
   	setChecksum();
+	
+	
+	for(i=0;i<knxFrame->frameLength;i++) {
+    printf("%0x\n", knxFrame->knxFrameBuffer[i]);
+    }
 
 	//createKNXMessageFrame(3,KNX_COMMAND_WRITE,mainGroup,middleGroup,subGroup,valueByte);
 	
