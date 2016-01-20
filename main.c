@@ -41,6 +41,8 @@ unsigned char rx_buf[MAX_RX_SIZE]={0};
 int rx_w_index = 0;
 int rx_r_index = 0;
 
+void process_rx_data(void);
+
 
 void dump_data(unsigned char * b, int count) {
 	printf("%i bytes: ", count);
@@ -105,6 +107,8 @@ void process_rx_data(void)
 		}
 
 		printf("The value of %02x is %d\n",rx_frame.sourceaddress,rx_frame.value);
+		
+		rx_r_index  =rx_r_index + (8 + rx_frame.length);
 
 		break;
 	}
@@ -219,10 +223,12 @@ int main(void)
 	struct timespec last_stat;
 
 	clock_gettime(CLOCK_MONOTONIC, &last_stat);
+	
+	groupWriteByte(_fd,0,1,1,0);
 
 	while (1) {
 
-		groupWriteByte(_fd,0,1,1,valuebyte);
+//		groupWriteByte(_fd,0,1,1,valuebyte);
 	
 		sleep(2);
 		
@@ -301,7 +307,9 @@ int main(void)
 				dump_serial_port_stats();
 				last_stat = current;
 //				groupWriteBool(_fd,0,1,3,0);
-//				groupWriteByte(_fd,0,1,1,0);
+				groupWriteByte(_fd,0,1,1,valuebyte);
+				valuebyte += 0x10;
+				
 				//groupReadBoolReq(_fd,2,1,227,0);
 			}
 		}
