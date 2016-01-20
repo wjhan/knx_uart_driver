@@ -70,6 +70,8 @@ int uartSendFrame(int fd);
 
 int groupWriteByte(int fd,int mainGroup, int middleGroup, int subGroup, int value);
 
+int groupReadByte(int fd, int mainGroup, int middleGroup, int subGroup);
+
 
 #endif
 

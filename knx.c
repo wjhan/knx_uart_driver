@@ -181,6 +181,23 @@ int groupReadBoolReq(int fd, int mainGroup, int middleGroup, int subGroup, int v
 	return uartSendFrame(fd);
 }
 
+int groupReadByte(int fd, int mainGroup, int middleGroup, int subGroup)
+{
+	initKnxFrame(fd);
+
+	clean();
+
+  	setSourceAddress(1,1,2);
+  	setTargetGroupAddress(mainGroup,middleGroup,subGroup);
+  	setFirsetDataByte(0);
+  	setCommand(KNX_COMMAND_READ);
+  	setPayloadLength(2);
+  	setChecksum();
+	
+	return uartSendFrame(fd);
+
+}
+
 int UART_Send(int fd,char *buffer, int length)
 {
     write(fd,buffer,length);

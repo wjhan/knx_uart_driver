@@ -60,6 +60,8 @@ void rx_data_handler(unsigned char * b, int count)
         rx_w_index++;
         if(rx_w_index>=MAX_RX_SIZE) rx_w_index -= MAX_RX_SIZE;
     }
+	
+	process_rx_data();
 }
 
 void dump_rx_buf(int len)
@@ -86,10 +88,22 @@ void process_rx_data(void)
 	i = rx_r_index;
 	if(rx_buf[i]==0xBC)
 	{
-		dump_rx_buf(9);	
-		rx_frame.length=9;
+		
+		rx_frame.length=rx_buf[i+5]&0x0F;
 		rx_frame.sourceaddress = rx_buf[i+3]<<8 | rx_buf[i+4];
-		rx_frame.value = rx_buf[i+7] & 0x0F;
+		
+		if(rx_frame.length==1)
+		{
+			rx_frame.value = rx_buf[i+7] & 0x0F;
+			dump_rx_buf(9);	
+		}
+		
+		if(rx_frame.length==2)
+		{
+			rx_frame.value = rx_buf[i+8];
+			dump_rx_buf(10);	
+		}
+
 		printf("The value of %02x is %d\n",rx_frame.sourceaddress,rx_frame.value);
 
 		break;
@@ -190,7 +204,7 @@ int main(void)
 	unsigned char tb[10] = {0x01,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09};
 	int _cl_stats =1;
 
-	int valuebyte = 0x20;
+	int valuebyte = 0x80;
 
 //	printf("Linux serial test app\n");
 
@@ -209,11 +223,28 @@ int main(void)
 	while (1) {
 
 		groupWriteByte(_fd,0,1,1,valuebyte);
-		valuebyte + = 0x10;
+	
+		sleep(2);
+		
+		
+		groupReadByte(_fd,0,1,1);
+		
+		usleep(50000);
+		
+		int c = read(_fd, &rb, 1024);
+
+		if(c>8) printf("knx write success\n");
+
+		usleep(50000);
+		c = read(_fd, &rb, 1024);
+		if(c>0) rx_data_handler(rb,c);
+		
+		
+//		valuebyte + = 0x10;
 //		groupWriteBool(_fd,0,1,3,1);
 //		groupWriteBool(_fd,0,0,2,1);
 //		groupWriteBool(_fd,0,0,1,1);
-		sleep(2);
+		
 		/** Group Write boolen**/ 
 //		groupWriteBool(_fd,0,1,3,0);
 //		groupWriteBool(_fd,0,0,3,0);
